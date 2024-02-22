@@ -29,7 +29,6 @@ jobs:
     steps:
     - name: Build XLA static Linux CPU
       run: |
-        sudo apt install clang
         git clone https://github.com/openxla/xla
         cd xla
         docker run --name xla -w /xla -it -d --rm -v $PWD:/xla tensorflow/build:latest-python3.9 bash
