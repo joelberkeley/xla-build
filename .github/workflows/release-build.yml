@@ -1,7 +1,8 @@
 on:
   workflow_dispatch:
   push:
-    linux-cpu-static
+    branches:
+      - linux-cpu-static
 #  schedule:
 #    - cron: '0 20 * * *'
 
