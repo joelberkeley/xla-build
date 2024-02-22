@@ -35,7 +35,7 @@ jobs:
         docker exec xla ./configure.py --backend=CPU
         docker exec xla bazel build --test_output=all --spawn_strategy=sandboxed //xla/client:xla_builder
         cd ..
-        tar cfz everything.tar.gz .
+        tar cfz everything.tar.gz xla
     - name: Publish build
       uses: actions/upload-release-asset@v1
       env:
