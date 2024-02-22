@@ -1,0 +1,47 @@
+on:
+  workflow_dispatch:
+  push:
+    linux-cpu-static
+#  schedule:
+#    - cron: '0 20 * * *'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create-release.outputs.upload_url }}
+    steps:
+    - uses: actions/checkout@v4
+    - name: Get today's date
+      run: echo "TODAY=$(date +'%Y-%m-%d')" >> $GITHUB_ENV
+    - name: Create release
+      id: create-release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: $TODAY
+        release_name: XLA nightly $TODAY
+        body: "XLA nightly $TODAY"
+  linux-cpu-static:
+    needs: create-release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build XLA static Linux CPU
+      run: |
+        git checkout https://github.com/openxla/xla
+        sudo apt install clang
+        curl -fL https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64 > bazelisk
+        chmod +x bazelisk
+        bazel build --test_output=all --spawn_strategy=sandboxed //xla/...
+        ls -R
+#    - name: Publish C XLA lib cpu
+#      uses: actions/upload-release-asset@v1
+#      env:
+#        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#      with:
+#        upload_url: ${{ needs.create-release.outputs.upload_url }}
+#        asset_path: backend/c_xla_extension.tar.gz
+#        asset_name: c_xla_extension-x86_64-linux-cpu.tar.gz
+#        asset_content_type: application/gzip
