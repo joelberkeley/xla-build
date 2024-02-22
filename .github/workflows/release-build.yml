@@ -31,8 +31,9 @@ jobs:
     - uses: actions/checkout@v4
     - name: Build XLA static Linux CPU
       run: |
-        git clone https://github.com/openxla/xla
         sudo apt install clang
+        git clone https://github.com/openxla/xla
+        cd xla
         curl -fL https://github.com/bazelbuild/bazelisk/releases/download/v1.19.0/bazelisk-linux-amd64 > bazelisk
         chmod +x bazelisk
         bazel build --test_output=all --spawn_strategy=sandboxed //xla/...
