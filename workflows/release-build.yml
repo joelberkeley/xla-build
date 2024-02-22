@@ -1,6 +1,7 @@
 on:
   workflow_dispatch:
-  pull-request:
+  push:
+    linux-cpu-static
   schedule:
     - cron: '0 19 * * *'
 
