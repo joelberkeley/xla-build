@@ -4,7 +4,7 @@ on:
     branches:
       - linux-cpu-static
 #  schedule:
-#    - cron: '0 20 * * *'
+#    - cron: '0 0 * * *'
 
 jobs:
   create-release:
@@ -33,7 +33,7 @@ jobs:
         cd xla
         docker run --name xla -w /xla -it -d --rm -v $PWD:/xla tensorflow/build:latest-python3.9 bash
         docker exec xla ./configure.py --backend=CPU
-        docker exec xla bazel build --test_output=all --spawn_strategy=sandboxed //xla/...
+        docker exec xla bazel build --test_output=all --spawn_strategy=sandboxed //xla/client:xla_builder
         tar cfz everything.tar.gz .
     - name: Publish build
       uses: actions/upload-release-asset@v1
