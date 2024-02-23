@@ -31,13 +31,10 @@ jobs:
     - name: Build XLA static Linux CPU
       run: |
         git clone https://github.com/openxla/xla
-        # horrible hack, just to get something working
-        rm xla/xla/BUILD
-        mv BUILD xla/xla
         cd xla
         docker run --name xla -w /xla -it -d --rm -v $PWD:/xla tensorflow/build:latest-python3.9 bash
         docker exec xla ./configure.py --backend=CPU
-        docker exec xla bazel build --test_output=all --spawn_strategy=sandboxed //xla:name_me
+        docker exec xla bazel build --test_output=all --spawn_strategy=sandboxed //xla/service/cpu:sample_harness
     - name: Publish build
       uses: actions/upload-release-asset@v1
       env:
