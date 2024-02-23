@@ -33,7 +33,7 @@ jobs:
         mkdir build
         docker build -t xla .
         docker run -d -v $(pwd)/build:/build/bazel-bin xla
-        tar cfz build
+        tar cfz build.tar.gz build
     - name: Publish build
       uses: actions/upload-release-asset@v1
       env:
