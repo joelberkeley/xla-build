@@ -33,7 +33,7 @@ jobs:
       run: |
         git clone https://github.com/openxla/xla
         (cd xla && ./configure.py --backend=CPU)
-        bazel build --test_output=all --spawn_strategy=sandboxed //:xla
+        bazel build --test_output=all --spawn_strategy=sandboxed //:my_xla
     - name: Publish build
       uses: actions/upload-release-asset@v1
       env:
