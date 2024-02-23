@@ -33,7 +33,7 @@ jobs:
       run: |
         git clone https://github.com/openxla/xla
         (cd xla && ./configure.py --backend=CPU)
-        bazel build --experimental_repo_remote_exec //:my_xla
+        BAZEL_CXXOPTS='-std=c++17' bazel build --experimental_repo_remote_exec //:my_xla
     - name: Publish build
       uses: actions/upload-release-asset@v1
       env:
