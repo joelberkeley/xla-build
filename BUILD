@@ -1,0 +1,20 @@
+cc_library(
+    name = "my_xla",
+    deps = [
+        "//xla:array4d",
+        "//xla:literal",
+        "//xla:statusor",
+        "//xla:types",
+        "//xla:xla_data_proto_cc",
+        "//xla/client",
+        "//xla/client:client_library",
+        "//xla/client:global_data",
+        "//xla/client:local_client",
+        "//xla/client:xla_builder",
+        "//xla/client:xla_computation",
+        "@com_google_absl//absl/strings:str_format",
+        "@tsl//tsl/platform:logging",
+        "@tsl//tsl/platform:platform_port",
+    ],
+    alwayslink = True,
+)
