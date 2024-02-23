@@ -5,4 +5,4 @@ local_repository(
 
 load("//xla/third_party:repo.bzl", "tf_vendored")
 
-tf_vendored(name = "tsl", relpath = "xla/third_party/tsl")
+tf_vendored(name = "tsl", relpath = "third_party/tsl")
