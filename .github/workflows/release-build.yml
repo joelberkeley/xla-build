@@ -26,20 +26,21 @@ jobs:
   linux-cpu-static:
     needs: create-release
     runs-on: ubuntu-latest
+    container: tensorflow/build:latest-python3.9
     steps:
     - uses: actions/checkout@v4
     - name: Build XLA static Linux CPU
       run: |
-        mkdir build
-        docker build -t xla .
-        docker run -v $(pwd)/build:/build/bazel-bin xla
-        tar cfz build.tar.gz build
+        mkdir build && cd build
+        git clone https://github.com/openxla/xla
+        (cd xla && ./configure.py --backend=CPU)
+        bazel build --test_output=all --spawn_strategy=sandboxed //:xla
     - name: Publish build
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create-release.outputs.upload_url }}
-        asset_path: build.tar.gz
-        asset_name: build.tar.gz
+        asset_path: build/bazel-bin/libxla.a
+        asset_name: libxla.a
         asset_content_type: application/gzip
