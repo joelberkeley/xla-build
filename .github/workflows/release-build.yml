@@ -27,8 +27,8 @@ jobs:
     needs: create-release
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v4
     - name: Build XLA static Linux CPU
-      uses: actions/checkout@v4
       run: |
         git clone https://github.com/openxla/xla
         # horrible hack, just to get something working
