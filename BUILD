@@ -10,7 +10,7 @@ cc_library(
         "@xla//xla/client:global_data",
         "@xla//xla/client:xla_builder",
 
-        "@xla//xla/pjrt/c:pjrt_c_api_cpu",
+#        "@xla//xla/pjrt/c:pjrt_c_api_cpu",
 
         "@xla//xla/client:xla_computation",
         "@xla//xla/pjrt:pjrt_executable",
