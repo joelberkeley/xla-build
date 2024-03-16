@@ -1,3 +1,9 @@
+bazel-backend
+bazel-bin
+bazel-out
+bazel-testlogs
+MODULE.bazel
+Module.bazel.lock
 /xla
 
 # Prerequisites
