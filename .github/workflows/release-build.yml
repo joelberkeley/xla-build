@@ -1,0 +1,67 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - linux-cpu-static
+#  schedule:
+#    - cron: '0 0 * * *'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    outputs:
+      upload_url: ${{ steps.create-release.outputs.upload_url }}
+    steps:
+    - name: Get today's date
+      run: echo "NOW=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+    - name: Create release
+      id: create-release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ env.NOW }}
+        release_name: XLA nightly ${{ env.NOW }}
+        body: "XLA nightly ${{ env.NOW }}"
+  linux-cpu-static:
+    needs: create-release
+    runs-on: ubuntu-latest
+    container: tensorflow/build:latest-python3.9
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build XLA static Linux CPU
+      run: |
+        git clone https://github.com/openxla/xla
+        (cd xla && ./configure.py --backend=CPU)
+        BAZEL_CXXOPTS='-std=c++17' bazel build --experimental_repo_remote_exec //:my_xla
+        echo "doing ls next"
+        ls -H bazel-bin/
+        tar cfz bin.tar.gz bazel-bin/
+        tar cfz out.tar.gz bazel-out/
+    - name: Publish build
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: bazel-bin/libmy_xla.a
+        asset_name: libxla.a
+        asset_content_type: application/gzip
+    - name: Publish build
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: bin.tar.gz
+        asset_name: bin.tar.gz
+        asset_content_type: application/gzip
+    - name: Publish build
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: out.tar.gz
+        asset_name: out.tar.gz
+        asset_content_type: application/gzip
