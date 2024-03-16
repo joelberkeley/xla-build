@@ -33,7 +33,7 @@ jobs:
       run: |
         git clone https://github.com/openxla/xla
         (cd xla && ./configure.py --backend=CPU)
-        BAZEL_CXXOPTS='-std=c++17' bazel build --experimental_repo_remote_exec //:xla
+        BAZEL_CXXOPTS='-std=c++17' bazel build --experimental_repo_remote_exec //:my_xla
         tar cfz bin.tar.gz bazel-bin/
         tar cfz out.tar.gz bazel-out/
     - name: Publish build
