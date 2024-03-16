@@ -1,5 +1,5 @@
 cc_library(
-    name = "xla",
+    name = "my_xla",
     deps = [
         "@xla//xla/client/lib:math",
         "@xla//xla/client/lib:matrix",

@@ -42,7 +42,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create-release.outputs.upload_url }}
-        asset_path: bazel-bin/libxla.a
+        asset_path: bazel-bin/libmy_xla.a
         asset_name: libxla.a
         asset_content_type: application/gzip
     - name: Publish build
