@@ -20,9 +20,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ env.TODAY }}
-        release_name: XLA nightly ${{ env.TODAY }}
-        body: "XLA nightly ${{ env.TODAY }}"
+        tag_name: ${{ env.NOW }}
+        release_name: XLA nightly ${{ env.NOW }}
+        body: "XLA nightly ${{ env.NOW }}"
   linux-cpu-static:
     needs: create-release
     runs-on: ubuntu-latest
