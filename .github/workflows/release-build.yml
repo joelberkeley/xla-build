@@ -34,13 +34,32 @@ jobs:
         git clone https://github.com/openxla/xla
         (cd xla && ./configure.py --backend=CPU)
         BAZEL_CXXOPTS='-std=c++17' bazel build --experimental_repo_remote_exec //:xla
-        ls -R
+        tar cfz bin.tar.gz bazel-bin/
+        tar cfz out.tar.gz bazel-out/
     - name: Publish build
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ needs.create-release.outputs.upload_url }}
-        asset_path: build/bazel-bin/libxla.a
+        asset_path: bazel-bin/libxla.a
         asset_name: libxla.a
+        asset_content_type: application/gzip
+    - name: Publish build
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: bin.tar.gz
+        asset_name: bin.tar.gz
+        asset_content_type: application/gzip
+    - name: Publish build
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ needs.create-release.outputs.upload_url }}
+        asset_path: out.tar.gz
+        asset_name: out.tar.gz
         asset_content_type: application/gzip
