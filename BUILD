@@ -11,10 +11,6 @@ cc_library(
 #        "@xla//xla/client:xla_computation",
 #        "@xla//xla/pjrt:pjrt_executable",
 #        "@xla//xla:literal",
-
-        "@com_google_absl//absl/strings:str_format",
-        "@tsl//tsl/platform:logging",
-        "@tsl//tsl/platform:platform_port",
     ],
     deps = [
 #        "@xla//xla/client/lib:math",
